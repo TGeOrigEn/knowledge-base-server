@@ -1,5 +1,7 @@
 import express from 'express';
 import dotnev from 'dotenv';
+import activity from './routers/activity';
+import bodyParser from 'body-parser';
 
 dotnev.config();
 
@@ -7,6 +9,10 @@ const SERVER_PORT: number = Number(process.env.SERVER_PORT) || 8080;
 const SERVER_HOST: string = process.env.SERVER_HOST || 'localhost';
 
 const app = express();
+
+app.use(bodyParser.json());
+
+app.use('/api', activity);
 
 app.use((_req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
