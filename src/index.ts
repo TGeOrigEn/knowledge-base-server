@@ -6,17 +6,16 @@ import dotnev from 'dotenv';
 
 dotnev.config();
 
+const DATABASE_TABLES: string[] = process.env.DATABASE_TABLES ? JSON.parse(process.env.DATABASE_TABLES) : [];
 const SERVER_PORT: number = Number(process.env.SERVER_PORT) || 8080;
 const SERVER_HOST: string = process.env.SERVER_HOST || 'localhost';
+const API_PREFIX: string = process.env.SERVER_HOST || 'api';
 
 const app = express();
 
 app.use(BodyParser.json());
 
-app.use('/api', new BaseRouter('activity').router);
-app.use('/api', new BaseRouter('career').router);
-app.use('/api', new BaseRouter('person').router);
-app.use('/api', new BaseRouter('rank').router);
+DATABASE_TABLES.forEach((table) => app.use(`/${API_PREFIX}`, new BaseRouter(table).router));
 
 app.use((_req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
