@@ -2,10 +2,13 @@
   "name": "knowledge-base-server",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
-    "start": "node ."
+    "start": "pm2 start dist/server.js --name knowledge-base-server",
+    "stop": "pm2 stop knowledge-base-server",
+    "restart": "pm2 restart knowledge-base-server",
+    "log": "pm2 log knowledge-base-server"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +17,7 @@
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "pg": "^8.8.0",
+    "pm2": "^5.2.0",
     "typescript": "^4.8.3"
   },
   "devDependencies": {
