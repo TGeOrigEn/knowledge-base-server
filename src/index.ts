@@ -1,7 +1,8 @@
+import BaseRouter from './routers/router';
+import BodyParser from 'body-parser';
+
 import express from 'express';
 import dotnev from 'dotenv';
-import activity from './routers/activity';
-import bodyParser from 'body-parser';
 
 dotnev.config();
 
@@ -10,9 +11,12 @@ const SERVER_HOST: string = process.env.SERVER_HOST || 'localhost';
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(BodyParser.json());
 
-app.use('/api', activity);
+app.use('/api', new BaseRouter('activity').router);
+app.use('/api', new BaseRouter('career').router);
+app.use('/api', new BaseRouter('person').router);
+app.use('/api', new BaseRouter('rank').router);
 
 app.use((_req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');

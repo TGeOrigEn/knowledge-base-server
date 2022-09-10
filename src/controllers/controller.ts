@@ -1,39 +1,46 @@
-import { Pool, QueryResult } from 'pg';
+import { Request, Response } from 'express';
+import BaseController from './baseController';
+import database from '../database';
 
 export default class Controller {
 
-    private static readonly SEPARATOR: string = ', ';
+    private readonly table: string;
 
-    private constructor() { };
+    public constructor(table: string) {
+        this.table = table;
+    }
 
-    private static formatRequestParameters(columns: string[], values: string[]): string {
-        var params: string[] = [];
+    public async insert(req: Request, res: Response) {
+        const columns = Object.getOwnPropertyNames(req.body);
+        const values = Object.values(req.body) as string[];
 
-        for (var index = 0; index <= columns.length; index++)
-            params.push(`${columns[index]} = ${values[index]}`);
-
-        return params.join(Controller.SEPARATOR);
+        BaseController.insertionRequest(database, this.table, columns, values)
+            .then((result) => res.json(result.rows[0]));
     };
 
-    private static formatRequestValues(values: string[]): string[] {
-        return values.map(value => `'${value}'`);
+    public async selectAll(_req: Request, res: Response) {
+        BaseController.selectionRequest(database, this.table)
+            .then((result) => res.json(result.rows));
     };
 
-    public static async selectionRequest(database: Pool, table: string, columns?: string[], values?: string[]): Promise<QueryResult<any>> {
-        if (values && columns)
-            return await database.query(`SELECT * FROM ${table} WHERE ${Controller.formatRequestParameters(columns, Controller.formatRequestValues(values))}`);
-        return await database.query(`SELECT * FROM ${table}`);
+    public async selectBy(req: Request, res: Response) {
+        const columns = Object.getOwnPropertyNames(req.body);
+        const values = Object.values(req.body) as string[];
+
+        BaseController.selectionRequest(database, this.table, columns[0], values[0])
+            .then((result) => res.json(result.rows));
     };
 
-    public static async updationRequest(database: Pool, table: string, id: number, columns: string[], values: string[]): Promise<QueryResult<any>> {
-        return await database.query(`UPDATE ${table} SET ${Controller.formatRequestParameters(columns, Controller.formatRequestValues(values))} WHERE id = ${id} RETURNING *`);
+    public async update(req: Request, res: Response) {
+        const columns = Object.getOwnPropertyNames(req.body);
+        const values = Object.values(req.body) as string[];
+
+        BaseController.updationRequest(database, this.table, Number(req.params.id), columns, values)
+            .then((result) => res.json(result.rows[0]));
     };
 
-    public static async deletionRequest(database: Pool, table: string, id: number): Promise<QueryResult<any>> {
-        return await database.query(`DELETE FROM ${table} WHERE id = ${id}`);
-    };
-
-    public static async insertionRequest(database: Pool, table: string, columns: string[], values: string[]): Promise<QueryResult<any>> {
-        return await database.query(`INSERT INTO ${table} (${columns.join(Controller.SEPARATOR)}) values (${Controller.formatRequestValues(values).join(Controller.SEPARATOR)}) RETURNING *`);
+    public async delete(req: Request, res: Response) {
+        BaseController.deletionRequest(database, this.table, Number(req.params.id))
+            .then((result) => res.json(result.rows[0]));
     };
 };
