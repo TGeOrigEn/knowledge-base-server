@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
 import BaseController from './baseController';
+import { Request, Response } from 'express';
 import database from '../database';
 
 export default class Controller {
