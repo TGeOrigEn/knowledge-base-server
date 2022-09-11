@@ -13,10 +13,6 @@ const API_PREFIX: string = process.env.API_PREFIX;
 
 const app = express();
 
-app.use(BodyParser.json());
-
-DATABASE_TABLES.forEach((table) => app.use(`/${API_PREFIX}`, new BaseRouter(table).router));
-
 app.use((_req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -24,5 +20,9 @@ app.use((_req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     next();
 });
+
+app.use(BodyParser.json());
+
+DATABASE_TABLES.forEach((table) => app.use(`/${API_PREFIX}`, new BaseRouter(table).router));
 
 app.listen(SERVER_PORT, SERVER_HOST, () => console.log(`Running on: ${SERVER_HOST}:${SERVER_PORT}`));
