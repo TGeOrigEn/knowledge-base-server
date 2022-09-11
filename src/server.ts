@@ -6,10 +6,10 @@ import dotnev from 'dotenv';
 
 dotnev.config();
 
-const DATABASE_TABLES: string[] = process.env.DATABASE_TABLES ? JSON.parse(process.env.DATABASE_TABLES) : [];
-const SERVER_PORT: number = Number(process.env.SERVER_PORT) || 8080;
-const SERVER_HOST: string = process.env.SERVER_HOST || 'localhost';
-const API_PREFIX: string = process.env.SERVER_HOST || 'api';
+const DATABASE_TABLES: string[] = JSON.parse(process.env.DATABASE_TABLES);
+const SERVER_PORT: number = Number(process.env.SERVER_PORT);
+const SERVER_HOST: string = process.env.SERVER_HOST;
+const API_PREFIX: string = process.env.API_PREFIX;
 
 const app = express();
 

@@ -1,11 +1,14 @@
+import dotnev from 'dotenv';
 import { Pool } from 'pg';
 
-const PG_USER: string = process.env.PG_USER || 'postgres';
-const PG_PASSWORD: string = process.env.PG_PASSWORD || 'root';
+dotnev.config();
 
-const PG_DATABASE: string = process.env.PG_DATABASE || 'postgres';
-const PG_PORT: number = Number(process.env.PG_PORT) || 5432;
-const PG_HOST: string = process.env.PG_HOST || 'localhost';
+const PG_USER: string = process.env.PG_USER;
+const PG_PASSWORD: string = process.env.PG_PASSWORD;
+
+const PG_DATABASE: string = process.env.PG_DATABASE;
+const PG_PORT: number = Number(process.env.PG_PORT);
+const PG_HOST: string = process.env.PG_HOST;
 
 const pool = new Pool({
     user: PG_USER,
