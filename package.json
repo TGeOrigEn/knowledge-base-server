@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "pm2 start dist/server.js --name knowledge-base-server",
-    "stop": "pm2 stop knowledge-base-server",
+    "stop": "pm2 delete knowledge-base-server",
     "restart": "pm2 restart knowledge-base-server",
     "log": "pm2 log knowledge-base-server"
   },
