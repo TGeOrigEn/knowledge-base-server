@@ -19,7 +19,7 @@ export default class Controller {
     };
 
     public selectAll = async (_req: Request, res: Response) => {
-        await BaseController.selectionRequest(database, this.table)
+        await BaseController.selectionRequestAll(database, this.table)
             .then((result) => res.json(result.rows));
     };
 
@@ -27,7 +27,7 @@ export default class Controller {
         const columns = Object.getOwnPropertyNames(req.body);
         const values = Object.values(req.body) as string[];
 
-        await BaseController.selectionRequest(database, this.table, columns[0], values[0])
+        await BaseController.selectionRequestBy(database, this.table, columns[0], values[0])
             .then((result) => res.json(result.rows));
     };
 

@@ -19,9 +19,12 @@ export default class BaseController {
         return values.map(value => `'${value}'`);
     };
 
-    public static selectionRequest = async (database: Pool, table: string, column?: string, value?: string): Promise<QueryResult<any>> => {
-        if (value && column) return await database.query(`SELECT * FROM ${table} WHERE ${column} = ${value}`);
+    public static selectionRequestAll = async (database: Pool, table): Promise<QueryResult<any>> => {
         return await database.query(`SELECT * FROM ${table}`);
+    };
+
+    public static selectionRequestBy = async (database: Pool, table: string, column: string, value: string): Promise<QueryResult<any>> => {
+        return await database.query(`SELECT * FROM ${table} WHERE ${column} = ${value}`);
     };
 
     public static updationRequest = async (database: Pool, table: string, id: number, columns: string[], values: string[]): Promise<QueryResult<any>> => {
