@@ -25,7 +25,13 @@ export default class BaseController {
         const index: number = columns.indexOf("id");
 
         if (index !== -1) {
-            
+            console.log(`Before: ${columns}`);
+            console.log(`Remove: ${columns.splice(index, 1)}`);
+            console.log(`After: ${columns}\n`);
+
+            console.log(`Before: ${values}`);
+            console.log(`Remove: ${values.splice(index, 1)}`);
+            console.log(`After: ${values}\n`);
         }
 
         console.log(`INSERT INTO ${table} (${columns.join(this.SEPARATOR)}) values (${this.formatRequestValues(values).join(this.SEPARATOR)}) RETURNING *`);
@@ -36,7 +42,13 @@ export default class BaseController {
         const index: number = columns.indexOf("id");
 
         if (index !== -1) {
-            
+            console.log(`Before: ${columns}`);
+            console.log(`Remove: ${columns.splice(index, 1)}`);
+            console.log(`After: ${columns}\n`);
+
+            console.log(`Before: ${values}`);
+            console.log(`Remove: ${values.splice(index, 1)}`);
+            console.log(`After: ${values}\n`);
         }
 
         console.log(`UPDATE ${table} SET ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.SEPARATOR)} WHERE id = ${id} RETURNING *`);
