@@ -24,7 +24,7 @@ export default class BaseController {
     private static formatInsertionRequest(table: string, columns: string[], values: string[]) {
         const index: number = columns.indexOf("id");
 
-        if (index != -1) {
+        if (index !== -1) {
             columns.splice(index, 1);
             values.slice(index, 1);
         }
@@ -35,7 +35,7 @@ export default class BaseController {
     private static formatUpdateRequest(table: string, id: number, columns: string[], values: string[]) {
         const index: number = columns.indexOf("id");
 
-        if (index != -1) {
+        if (index !== -1) {
             columns.splice(index, 1);
             values.slice(index, 1);
         }
