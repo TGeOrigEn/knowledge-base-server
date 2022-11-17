@@ -12,9 +12,8 @@ export default class BaseController {
         var params: string[] = [];
 
         for (var index = 0; index < columns.length; index++)
-            params.push(`${columns[index]} = '${values[index]}'`);
+            params.push(`${columns[index]} = ${values[index]}`);
 
-        console.log(params.join(separator));
         return params.join(separator);
     };
 
