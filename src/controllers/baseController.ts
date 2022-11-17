@@ -12,7 +12,7 @@ export default class BaseController {
         var params: string[] = [];
 
         for (var index = 0; index < columns.length; index++)
-            params.push(`${columns[index]} = ${values[index]}`);
+            params.push(`${columns[index]} = '${values[index]}'`);
 
         return params.join(separator);
     };
