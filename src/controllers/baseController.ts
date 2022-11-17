@@ -29,6 +29,7 @@ export default class BaseController {
             values = values.slice(index, 1);
         }
 
+        console.log(`INSERT INTO ${table} (${columns.join(this.SEPARATOR)}) values (${this.formatRequestValues(values).join(this.SEPARATOR)}) RETURNING *`);
         return `INSERT INTO ${table} (${columns.join(this.SEPARATOR)}) values (${this.formatRequestValues(values).join(this.SEPARATOR)}) RETURNING *`;
     }
 
@@ -40,6 +41,7 @@ export default class BaseController {
             values = values.slice(index, 1);
         }
 
+        console.log(`UPDATE ${table} SET ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.SEPARATOR)} WHERE id = ${id} RETURNING *`);
         return `UPDATE ${table} SET ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.SEPARATOR)} WHERE id = ${id} RETURNING *`;
     }
 
