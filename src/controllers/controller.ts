@@ -27,7 +27,7 @@ export default class Controller {
         const columns = Object.getOwnPropertyNames(req.query);
         const values = Object.values(req.query) as string[];
 
-        await BaseController.selectionRequestBy(database, this.table, columns[0], values[0])
+        await BaseController.selectionRequestBy(database, this.table, columns, values)
             .then((result) => res.json(result.rows));
     };
 
