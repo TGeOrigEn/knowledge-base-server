@@ -21,6 +21,28 @@ export default class BaseController {
         return values.map(value => `'${value}'`);
     };
 
+    private static formatInsertionRequest(table: string, columns: string[], values: string[]) {
+        const index: number = columns.indexOf("id");
+
+        if (index != -1) {
+            columns.splice(index, 1);
+            values.slice(index, 1);
+        }
+
+        return `INSERT INTO ${table} (${columns.join(this.SEPARATOR)}) values (${this.formatRequestValues(values).join(this.SEPARATOR)}) RETURNING *`;
+    }
+
+    private static formatUpdateRequest(table: string, id: number, columns: string[], values: string[]) {
+        const index: number = columns.indexOf("id");
+
+        if (index != -1) {
+            columns.splice(index, 1);
+            values.slice(index, 1);
+        }
+
+        return `UPDATE ${table} SET ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.SEPARATOR)} WHERE id = ${id} RETURNING *`;
+    }
+
     public static selectionRequestAll = async (database: Pool, table): Promise<QueryResult<any>> => {
         return await database.query(`SELECT * FROM ${table}`);
     };
@@ -30,7 +52,7 @@ export default class BaseController {
     };
 
     public static updationRequest = async (database: Pool, table: string, id: number, columns: string[], values: string[]): Promise<QueryResult<any>> => {
-        return await database.query(`UPDATE ${table} SET ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.SEPARATOR)} WHERE id = ${id} RETURNING *`);
+        return await database.query(this.formatUpdateRequest(table, id, columns, values));
     };
 
     public static deletionRequest = async (database: Pool, table: string, id: number): Promise<QueryResult<any>> => {
@@ -38,6 +60,6 @@ export default class BaseController {
     };
 
     public static insertionRequest = async (database: Pool, table: string, columns: string[], values: string[]): Promise<QueryResult<any>> => {
-        return await database.query(`INSERT INTO ${table} (${columns.join(this.SEPARATOR)}) values (${this.formatRequestValues(values).join(this.SEPARATOR)}) RETURNING *`);
+        return await database.query(this.formatInsertionRequest(table, columns, values));
     };
 };
