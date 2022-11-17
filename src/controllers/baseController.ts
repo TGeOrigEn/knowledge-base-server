@@ -25,8 +25,8 @@ export default class BaseController {
         const index: number = columns.indexOf("id");
 
         if (index !== -1) {
-            columns = columns.splice(index, 1);
-            values = values.slice(index, 1);
+            columns.splice(index, 1);
+            values.slice(index, 1);
         }
 
         console.log(`INSERT INTO ${table} (${columns.join(this.SEPARATOR)}) values (${this.formatRequestValues(values).join(this.SEPARATOR)}) RETURNING *`);
@@ -37,8 +37,8 @@ export default class BaseController {
         const index: number = columns.indexOf("id");
 
         if (index !== -1) {
-            columns = columns.splice(index, 1);
-            values = values.slice(index, 1);
+            columns.splice(index, 1);
+            values.slice(index, 1);
         }
 
         console.log(`UPDATE ${table} SET ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.SEPARATOR)} WHERE id = ${id} RETURNING *`);
