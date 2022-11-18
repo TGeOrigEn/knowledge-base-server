@@ -55,6 +55,11 @@ export default class BaseController {
         return `UPDATE ${table} SET ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.SEPARATOR)} WHERE id = ${id} RETURNING *`;
     }
 
+    private static log(table: string, columns: string[], values: string[]): string {
+        console.log(`DELETE FROM ${table} WHERE id ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.OPERATOR_AND)}`);
+        return `DELETE FROM ${table} WHERE id ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.OPERATOR_AND)}`;
+    }
+
     public static selectionRequestAll = async (database: Pool, table): Promise<QueryResult<any>> => {
         return await database.query(`SELECT * FROM ${table}`);
     };
@@ -72,7 +77,7 @@ export default class BaseController {
     };
 
     public static deletionRequestBy = async (database: Pool, table: string, columns: string[], values: string[]): Promise<QueryResult<any>> => {
-        return await database.query(`DELETE FROM ${table} WHERE id ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.OPERATOR_AND)}`);
+        return await database.query(this.log(table, columns, values));
     };
 
     public static insertionRequest = async (database: Pool, table: string, columns: string[], values: string[]): Promise<QueryResult<any>> => {
