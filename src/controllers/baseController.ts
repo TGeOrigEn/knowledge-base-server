@@ -71,6 +71,10 @@ export default class BaseController {
         return await database.query(`DELETE FROM ${table} WHERE id = ${id}`);
     };
 
+    public static deletionRequestBy = async (database: Pool, table: string, columns: string[], values: string[]): Promise<QueryResult<any>> => {
+        return await database.query(`DELETE FROM ${table} WHERE id ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.OPERATOR_AND)}`);
+    };
+
     public static insertionRequest = async (database: Pool, table: string, columns: string[], values: string[]): Promise<QueryResult<any>> => {
         return await database.query(this.formatInsertionRequest(table, columns, values));
     };

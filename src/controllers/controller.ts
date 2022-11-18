@@ -43,4 +43,12 @@ export default class Controller {
         await BaseController.deletionRequest(database, this.table, Number(req.params.id))
             .then((result) => res.json(result.rows[0]));
     };
+
+    public deleteBy = async (req: Request, res: Response) => {
+        const columns = Object.getOwnPropertyNames(req.query);
+        const values = Object.values(req.query) as string[];
+
+        await BaseController.deletionRequestBy(database, this.table, columns, values)
+            .then((result) => res.json(result.rows));
+    };
 };
