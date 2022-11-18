@@ -25,13 +25,8 @@ export default class BaseController {
         const index: number = columns.indexOf("id");
 
         if (index !== -1) {
-            console.log(`Before: ${columns}`);
-            console.log(`Remove: ${columns.splice(index, 1)}`);
-            console.log(`After: ${columns}\n`);
-
-            console.log(`Before: ${values}`);
-            console.log(`Remove: ${values.splice(index, 1)}`);
-            console.log(`After: ${values}\n`);
+            columns.splice(index, 1);
+            values.splice(index, 1);
         }
 
         console.log(`INSERT INTO ${table} (${columns.join(this.SEPARATOR)}) values (${this.formatRequestValues(values).join(this.SEPARATOR)}) RETURNING *`);
@@ -42,22 +37,11 @@ export default class BaseController {
         const index: number = columns.indexOf("id");
 
         if (index !== -1) {
-            console.log(`Before: ${columns}`);
-            console.log(`Remove: ${columns.splice(index, 1)}`);
-            console.log(`After: ${columns}\n`);
-
-            console.log(`Before: ${values}`);
-            console.log(`Remove: ${values.splice(index, 1)}`);
-            console.log(`After: ${values}\n`);
+            columns.splice(index, 1);
+            values.splice(index, 1);
         }
 
-        console.log(`UPDATE ${table} SET ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.SEPARATOR)} WHERE id = ${id} RETURNING *`);
         return `UPDATE ${table} SET ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.SEPARATOR)} WHERE id = ${id} RETURNING *`;
-    }
-
-    private static log(table: string, columns: string[], values: string[]): string {
-        console.log(`DELETE FROM ${table} WHERE id ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.OPERATOR_AND)}`);
-        return `DELETE FROM ${table} WHERE id ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.OPERATOR_AND)}`;
     }
 
     public static selectionRequestAll = async (database: Pool, table): Promise<QueryResult<any>> => {
@@ -77,7 +61,7 @@ export default class BaseController {
     };
 
     public static deletionRequestBy = async (database: Pool, table: string, columns: string[], values: string[]): Promise<QueryResult<any>> => {
-        return await database.query(this.log(table, columns, values));
+        return await database.query(`DELETE FROM ${table} WHERE ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.OPERATOR_AND)}`);
     };
 
     public static insertionRequest = async (database: Pool, table: string, columns: string[], values: string[]): Promise<QueryResult<any>> => {
