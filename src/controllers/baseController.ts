@@ -24,33 +24,29 @@ export default class BaseController {
     private static formatInsertionRequest(table: string, columns: string[], values: string[]) {
         const index: number = columns.indexOf("id");
 
-        if (index !== -1) {
-            console.log(columns);
-            console.log(columns.splice(index, 1));
-            console.log(columns);
+        const column: string[] = [...columns];
+        const value: string[] = [...values];
 
-            console.log(values);
-            console.log(values.splice(index, 1));
-            console.log(values);
+        if (index !== -1) {
+            console.log(column.splice(index, 1));
+            console.log(value.splice(index, 1));
         }
 
-        return `INSERT INTO ${table} (${columns.join(this.SEPARATOR)}) values (${this.formatRequestValues(values).join(this.SEPARATOR)}) RETURNING *`;
+        return `INSERT INTO ${table} (${column.join(this.SEPARATOR)}) values (${this.formatRequestValues(value).join(this.SEPARATOR)}) RETURNING *`;
     }
 
     private static formatUpdateRequest(table: string, id: number, columns: string[], values: string[]) {
         const index: number = columns.indexOf("id");
 
-        if (index !== -1) {
-            console.log(columns);
-            console.log(columns.splice(index, 1));
-            console.log(columns);
+        const column: string[] = [...columns];
+        const value: string[] = [...values];
 
-            console.log(values);
-            console.log(values.splice(index, 1));
-            console.log(values);
+        if (index !== -1) {
+            console.log(column.splice(index, 1));
+            console.log(value.splice(index, 1));
         }
 
-        return `UPDATE ${table} SET ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.SEPARATOR)} WHERE id = ${id} RETURNING *`;
+        return `UPDATE ${table} SET ${this.formatRequestParameters(column, this.formatRequestValues(value), BaseController.SEPARATOR)} WHERE id = ${id} RETURNING *`;
     }
 
     public static selectionRequestAll = async (database: Pool, table): Promise<QueryResult<any>> => {
