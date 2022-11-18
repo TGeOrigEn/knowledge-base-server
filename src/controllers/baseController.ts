@@ -24,8 +24,8 @@ export default class BaseController {
     private static formatInsertionRequest(table: string, columns: string[], values: string[]) {
         const index: number = columns.indexOf("id");
 
-        const column: string[] = [...columns];
-        const value: string[] = [...values];
+        var column: string[] = [...columns];
+        var value: string[] = [...values];
 
         if (index !== -1) {
             console.log(column.splice(index, 1));
@@ -38,8 +38,8 @@ export default class BaseController {
     private static formatUpdateRequest(table: string, id: number, columns: string[], values: string[]) {
         const index: number = columns.indexOf("id");
 
-        const column: string[] = [...columns];
-        const value: string[] = [...values];
+        var column: string[] = [...columns];
+        var value: string[] = [...values];
 
         if (index !== -1) {
             console.log(column.splice(index, 1));
