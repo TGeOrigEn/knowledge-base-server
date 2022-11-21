@@ -39,6 +39,11 @@ export default class Controller {
             .then((result) => res.json(result.rows[0]));
     };
 
+    public login = async (req: Request, res: Response) => {
+        await BaseController.login(database, req.params.login, req.params.password)
+            .then((result) => res.json(result));
+    };
+
     public delete = async (req: Request, res: Response) => {
         await BaseController.deletionRequest(database, this.table, Number(req.params.id))
             .then((result) => res.json(result.rows[0]));

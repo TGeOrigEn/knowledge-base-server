@@ -1,4 +1,6 @@
+import { response } from 'express';
 import { Pool, QueryResult } from 'pg';
+import { TokenGenerator, TokenBase } from 'ts-token-generator';
 
 export default class BaseController {
 
@@ -6,7 +8,44 @@ export default class BaseController {
 
     private static readonly OPERATOR_AND: string = ' AND ';
 
+    private static readonly tokenGenerator = new TokenGenerator();
+
     private constructor() { };
+
+    private static token: string[] = [];
+
+    private static tokenVerification(columns: string[], values: string[]): { verified: boolean, columns: string[], values: string[] } {
+        const index: number = columns.indexOf("token");
+        var verified: boolean = false;
+
+        if (index !== -1) {
+            var token: string = "";
+
+            console.log(`Before: ${columns}`);
+            console.log(columns.splice(index, 1));
+            console.log(`After: ${columns}`);
+
+            console.log(`Before: ${values}`);
+            console.log(token = values.splice(index, 1)[0]);
+            console.log(`After: ${values}`);
+
+            verified = BaseController.token.includes(token);
+        }
+
+        return { verified: verified, columns: columns, values: values };
+    }
+
+    public static login = async (database: Pool, login: string, password: string): Promise<string | undefined> => {
+        const rows = (await database.query(`SELECT * FROM users WHERE login = '${login}' AND password = '${password}'`)).rows;
+        const token = BaseController.tokenGenerator.generate();
+
+        if (rows.length != 0) {
+            BaseController.token.push(token);
+            return token;
+        }
+
+        return undefined;
+    };
 
     private static formatRequestParameters = (columns: string[], values: string[], separator: string): string => {
         var params: string[] = [];
