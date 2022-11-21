@@ -29,6 +29,7 @@ export default class BaseController {
             console.log(`After: ${values}`);
 
             verified = BaseController.token.includes(token);
+            console.log(verified);
         }
 
         return { verified: verified, columns: columns, values: values };
