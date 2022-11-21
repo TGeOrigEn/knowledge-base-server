@@ -40,7 +40,10 @@ export default class Controller {
     };
 
     public login = async (req: Request, res: Response) => {
-        await BaseController.login(database, req.query['login'].toLocaleString(), req.query['password'].toLocaleString())
+        const columns = Object.getOwnPropertyNames(req.query);
+        const values = Object.values(req.query) as string[];
+
+        await BaseController.login(database, values[0], values[1])
             .then((result) => res.json(result));
     };
 
