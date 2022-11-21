@@ -51,7 +51,7 @@ export default class Controller {
     };
 
     public token = async (req: Request, res: Response) => {
-        await BaseController.tokenRequest(req.body.token)
+        await BaseController.tokenRequest(req.params.token)
             .then((result) => res.json(result));
     };
 
