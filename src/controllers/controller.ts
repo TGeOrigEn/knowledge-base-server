@@ -49,8 +49,10 @@ export default class Controller {
     };
 
     public token = async (req: Request, res: Response) => {
-        console.log(req.query[0].toString());
-        await BaseController.tokenRequest(req.query[0].toString())
+        const columns = Object.getOwnPropertyNames(req.query);
+        const values = Object.values(req.query) as string[];
+        console.log(values[0]);
+        await BaseController.tokenRequest(values[0])
             .then((result) => res.json(result));
     };
 
