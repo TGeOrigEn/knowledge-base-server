@@ -38,27 +38,11 @@ export default class BaseController {
         console.log(`LOGIN: ${login}`);
         console.log(`PASSWORD: ${password}`);
         
+        console.log(`SELECT * FROM users WHERE login = '${login}' AND password = '${password}'`);
         const rowCount = (await database.query(`SELECT * FROM users WHERE login = '${login}' AND password = '${password}'`)).rowCount;
         const token = BaseController.tokenGenerator.generate();
 
         if (rowCount != 0) {
-            BaseController.token.push(token);
-            return token;
-        }
-
-        return undefined;
-    };
-
-    public static login = async (database: Pool, login: string, password: string): Promise<string | undefined> => {
-        console.log(`LOGIN: ${login}`);
-        console.log(`PASSWORD: ${password}`);
-
-        const rows = (await database.query(`SELECT * FROM users WHERE login = '${login}' AND password = '${password}'`)).rows;
-        console.log(`SELECT * FROM users WHERE login = '${login}' AND password = '${password}'`);
-        console.log(rows);
-        const token = BaseController.tokenGenerator.generate();
-
-        if (rows.length != 0) {
             BaseController.token.push(token);
             return token;
         }

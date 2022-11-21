@@ -44,6 +44,8 @@ export default class Controller {
         const values = Object.values(req.query) as string[];
         console.log(values);
         console.log(columns);
+        console.log(req.params.login);
+        console.log(req.params.password);
         await BaseController.login(database, values[0], values[1])
             .then((result) => res.json(result));
     };
