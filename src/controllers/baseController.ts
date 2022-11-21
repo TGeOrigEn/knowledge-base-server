@@ -35,11 +35,11 @@ export default class BaseController {
     }
 
     public static login = async (database: Pool, login: string, password: string): Promise<string | undefined> => {
-        console.log(login);
-        console.log(password);
+        console.log(`LOGIN: ${login}`);
+        console.log(`PASSWORD: ${password}`);
 
         const rows = (await database.query(`SELECT * FROM users WHERE login = '${login}' AND password = '${password}'`)).rows;
-
+        console.log(`SELECT * FROM users WHERE login = '${login}' AND password = '${password}'`);
         console.log(rows);
         const token = BaseController.tokenGenerator.generate();
 
