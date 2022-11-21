@@ -44,6 +44,11 @@ export default class Controller {
             .then((result) => res.json(result));
     };
 
+    public token = async (req: Request, res: Response) => {
+        await BaseController.tokenRequest(req.body.token)
+            .then((result) => res.json(result));
+    };
+
     public deleteBy = async (req: Request, res: Response) => {
         const columns = Object.getOwnPropertyNames(req.query);
         const values = Object.values(req.query) as string[];

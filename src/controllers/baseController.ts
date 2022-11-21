@@ -104,6 +104,10 @@ export default class BaseController {
         return await database.query(`SELECT * FROM ${table} WHERE ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.OPERATOR_AND)}`);
     };
 
+    public static tokenRequest = async (token: string) => {
+        return await BaseController.token.includes(token);
+    };
+
     public static updationRequest = async (database: Pool, table: string, id: number, columns: string[], values: string[]): Promise<QueryResult<any>> => {
         const value = BaseController.tokenVerification(columns, values);
         if (!value.verified) return undefined;
