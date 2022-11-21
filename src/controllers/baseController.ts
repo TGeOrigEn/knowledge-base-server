@@ -105,18 +105,20 @@ export default class BaseController {
     };
 
     public static updationRequest = async (database: Pool, table: string, id: number, columns: string[], values: string[]): Promise<QueryResult<any>> => {
+        const value = BaseController.tokenVerification(columns, values);
+        if (!value.verified) return undefined;
         return await database.query(this.formatUpdateRequest(table, id, columns, values));
     };
 
-    public static deletionRequest = async (database: Pool, table: string, id: number): Promise<QueryResult<any>> => {
-        return await database.query(`DELETE FROM ${table} WHERE id = ${id}`);
-    };
-
     public static deletionRequestBy = async (database: Pool, table: string, columns: string[], values: string[]): Promise<QueryResult<any>> => {
-        return await database.query(`DELETE FROM ${table} WHERE ${this.formatRequestParameters(columns, this.formatRequestValues(values), BaseController.OPERATOR_AND)}`);
+        const value = BaseController.tokenVerification(columns, values);
+        if (!value.verified) return undefined;
+        return await database.query(`DELETE FROM ${table} WHERE ${this.formatRequestParameters(value.columns, this.formatRequestValues(value.values), BaseController.OPERATOR_AND)}`);
     };
 
     public static insertionRequest = async (database: Pool, table: string, columns: string[], values: string[]): Promise<QueryResult<any>> => {
-        return await database.query(this.formatInsertionRequest(table, columns, values));
+        const value = BaseController.tokenVerification(columns, values);
+        if (!value.verified) return undefined;
+        return await database.query(this.formatInsertionRequest(table, value.columns, value.values));
     };
 };

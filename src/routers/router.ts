@@ -12,7 +12,6 @@ export default class BaseRouter {
 
         this.router = Router();
 
-        this.router.delete(`/${table}/:id`, this.controller.delete);
         this.router.get(`/${table}/all`, this.controller.selectAll);
         this.router.delete(`/${table}`, this.controller.deleteBy);
         this.router.put(`/${table}/:id`, this.controller.update);
