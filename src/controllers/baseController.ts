@@ -1,6 +1,5 @@
-import { response } from 'express';
 import { Pool, QueryResult } from 'pg';
-import { TokenGenerator, TokenBase } from 'ts-token-generator';
+import { TokenGenerator } from 'ts-token-generator';
 
 export default class BaseController {
 
@@ -37,6 +36,7 @@ export default class BaseController {
 
     public static login = async (database: Pool, login: string, password: string): Promise<string | undefined> => {
         const rows = (await database.query(`SELECT * FROM users WHERE login = '${login}' AND password = '${password}'`)).rows;
+        console.log(rows);
         const token = BaseController.tokenGenerator.generate();
 
         if (rows.length != 0) {
