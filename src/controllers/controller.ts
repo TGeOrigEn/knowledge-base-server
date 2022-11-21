@@ -42,7 +42,8 @@ export default class Controller {
     public login = async (req: Request, res: Response) => {
         const columns = Object.getOwnPropertyNames(req.query);
         const values = Object.values(req.query) as string[];
-
+        console.log(values);
+        console.log(columns);
         await BaseController.login(database, values[0], values[1])
             .then((result) => res.json(result));
     };
