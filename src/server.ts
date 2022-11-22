@@ -20,9 +20,11 @@ const credentials = { key: privateKey, cert: certificate }
 
 const app = express();
 
-app.use((_req, res, next) => {
+app.use((_req, res) => {
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', '*');
-    next();
 });
 
 app.use(parser.json());
