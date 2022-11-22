@@ -5,8 +5,9 @@ import express from 'express';
 import dotnev from 'dotenv';
 import fs from 'fs';
 import https from 'https';
+import http from 'http';
 
-const privateKey  = fs.readFileSync('gov-elite-bd.ru.key', 'utf8');
+const privateKey  = fs.readFileSync('etc/ssl/gov-elite-bd.ru.key', 'utf8');
 const certificate = fs.readFileSync('etc/ssl/gov-elite-bd.ru.crt', 'utf8');
 
 const credentials = {key: privateKey, cert: certificate}
@@ -34,8 +35,10 @@ app.use(BodyParser.json());
 
 DATABASE_TABLES.forEach((table) => app.use(`/${API_PREFIX}`, new BaseRouter(table).router));
 
-const httpsServer = https.createServer(credentials, app)
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(8080);
+httpsServer.listen(PORT);
 
 //app.listen(SERVER_PORT, SERVER_HOST, () => console.log(`Running on: ${SERVER_HOST}:${SERVER_PORT}`));
-
-httpsServer.listen(PORT);
