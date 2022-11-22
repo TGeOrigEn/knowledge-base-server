@@ -3,7 +3,13 @@ import BodyParser from 'body-parser';
 
 import express from 'express';
 import dotnev from 'dotenv';
+import fs from 'fs';
+import https from 'https';
 
+const privateKey  = fs.readFileSync('etc/ssl/server.key', 'utf8');
+const certificate = fs.readFileSync('etc/ssl/server.crt', 'utf8');
+
+const credentials = {key: privateKey, cert: certificate}
 dotnev.config();
 
 const DATABASE_TABLES: string[] = JSON.parse(process.env.DATABASE_TABLES);
@@ -21,8 +27,15 @@ app.use((_req, res, next) => {
     next();
 });
 
+
+const PORT = Number(process.env.SERVER_PORT);
+
 app.use(BodyParser.json());
 
 DATABASE_TABLES.forEach((table) => app.use(`/${API_PREFIX}`, new BaseRouter(table).router));
 
-app.listen(SERVER_PORT, SERVER_HOST, () => console.log(`Running on: ${SERVER_HOST}:${SERVER_PORT}`));
+const httpsServer = https.createServer(credentials, app)
+
+//app.listen(SERVER_PORT, SERVER_HOST, () => console.log(`Running on: ${SERVER_HOST}:${SERVER_PORT}`));
+
+httpsServer.listen(PORT);
