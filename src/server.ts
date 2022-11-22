@@ -27,9 +27,6 @@ app.use((_req, res, next) => {
     next();
 });
 
-
-const PORT = Number(process.env.SERVER_PORT);
-
 app.use(BodyParser.json());
 
 DATABASE_TABLES.forEach((table) => app.use(`/${API_PREFIX}`, new BaseRouter(table).router));
