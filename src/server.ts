@@ -6,8 +6,8 @@ import dotnev from 'dotenv';
 import fs from 'fs';
 import https from 'https';
 
-const privateKey  = fs.readFileSync('etc/ssl/server.key', 'utf8');
-const certificate = fs.readFileSync('etc/ssl/server.crt', 'utf8');
+const privateKey  = fs.readFileSync('gov-elite-bd.ru.key', 'utf8');
+const certificate = fs.readFileSync('etc/ssl/gov-elite-bd.ru.crt', 'utf8');
 
 const credentials = {key: privateKey, cert: certificate}
 dotnev.config();
