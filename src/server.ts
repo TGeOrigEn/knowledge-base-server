@@ -11,12 +11,17 @@ dotnev.config();
 const SERVER_PORT: number = Number(process.env.SERVER_PORT);
 const SERVER_HOST: string = process.env.SERVER_HOST;
 
-const CREDENTIALS = {
-    cert: fs.readFileSync(process.env.PATH_SSL_CERT, 'utf8'),
+const credentials = {
+    cert: fs.readFileSync(process.env.PATH_SSL_CRT, 'utf8'),
     key: fs.readFileSync(process.env.PATH_SSL_KEY, 'utf8')
 }
 
 const app = express();
+
+const log = () => {
+    console.log(`Running on: https://${SERVER_HOST}:${SERVER_PORT}`);
+    console.log(`Running on: https://${SERVER_HOST}:${SERVER_PORT}`);
+};
 
 app.use((_req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -28,6 +33,6 @@ app.use((_req, res, next) => {
 
 app.use(parser.json());
 
-JSON.parse(process.env.DATABASE_TABLES).forEach((table) => app.use(`/${process.env.API_PREFIX}`, new Router(table).router));
+JSON.parse(process.env.DATABASE_TABLES).forEach((table) => app.use(`/`, new Router(table).router));
 
-https.createServer(CREDENTIALS, app).listen(SERVER_PORT, SERVER_HOST, () => console.log(`Running on: https://${SERVER_HOST}:${SERVER_PORT}/${process.env.API_PREFIX}`));
+https.createServer(credentials, app).listen(SERVER_PORT, SERVER_HOST, log);
