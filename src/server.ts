@@ -5,11 +5,12 @@ import express from 'express';
 import dotnev from 'dotenv';
 import fs from 'fs';
 import https from 'https';
+import http from 'http';
 
-const privateKey  = fs.readFileSync('/etc/ssl/gov-elite-bd.ru.key', 'utf8');
+const privateKey = fs.readFileSync('/etc/ssl/gov-elite-bd.ru.key', 'utf8');
 const certificate = fs.readFileSync('/etc/ssl/gov-elite-bd.ru.crt', 'utf8');
 
-const credentials = {key: privateKey, cert: certificate}
+const credentials = { key: privateKey, cert: certificate }
 dotnev.config();
 
 const DATABASE_TABLES: string[] = JSON.parse(process.env.DATABASE_TABLES);
@@ -32,7 +33,9 @@ app.use(BodyParser.json());
 DATABASE_TABLES.forEach((table) => app.use(`/${API_PREFIX}`, new BaseRouter(table).router));
 
 var httpsServer = https.createServer(credentials, app);
+var httpServer = http.createServer(app);
 
+httpServer.listen(8080, SERVER_HOST, () => console.log(`Running on: ${8080}:${SERVER_PORT}`))
 httpsServer.listen(SERVER_PORT, SERVER_HOST, () => console.log(`Running on: ${SERVER_HOST}:${SERVER_PORT}`));
 
 //app.listen(SERVER_PORT, SERVER_HOST, () => console.log(`Running on: ${SERVER_HOST}:${SERVER_PORT}`));
