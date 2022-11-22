@@ -8,15 +8,13 @@ import fs from 'fs';
 
 dotnev.config();
 
-const DATABASE_TABLES: string[] = JSON.parse(process.env.DATABASE_TABLES);
 const SERVER_PORT: number = Number(process.env.SERVER_PORT);
 const SERVER_HOST: string = process.env.SERVER_HOST;
-const API_PREFIX: string = process.env.API_PREFIX;
 
-const certificate = fs.readFileSync('/etc/ssl/gov-elite-bd.ru.crt', 'utf8');
-const privateKey = fs.readFileSync('/etc/ssl/gov-elite-bd.ru.key', 'utf8');
-
-const credentials = { key: privateKey, cert: certificate }
+const CREDENTIALS = {
+    cert: fs.readFileSync(process.env.PATH_SSL_CERT, 'utf8'),
+    key: fs.readFileSync(process.env.PATH_SSL_KEY, 'utf8')
+}
 
 const app = express();
 
@@ -30,6 +28,6 @@ app.use((_req, res, next) => {
 
 app.use(parser.json());
 
-DATABASE_TABLES.forEach((table) => app.use(`/${API_PREFIX}`, new Router(table).router));
+JSON.parse(process.env.DATABASE_TABLES).forEach((table) => app.use(`/${process.env.API_PREFIX}`, new Router(table).router));
 
-https.createServer(credentials, app).listen(SERVER_PORT, SERVER_HOST, () => console.log(`Running on: https://${SERVER_HOST}:${SERVER_PORT}`));
+https.createServer(CREDENTIALS, app).listen(SERVER_PORT, SERVER_HOST, () => console.log(`Running on: https://${SERVER_HOST}:${SERVER_PORT}/${process.env.API_PREFIX}`));
