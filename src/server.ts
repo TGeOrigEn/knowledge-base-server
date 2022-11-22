@@ -35,7 +35,7 @@ DATABASE_TABLES.forEach((table) => app.use(`/${API_PREFIX}`, new BaseRouter(tabl
 var httpsServer = https.createServer(credentials, app);
 var httpServer = http.createServer(app);
 
-httpServer.listen(8080, SERVER_HOST, () => console.log(`Running on: ${8080}:${SERVER_PORT}`))
+httpServer.listen(8080, SERVER_HOST, () => console.log(`Running on: ${SERVER_HOST}:${8080}`))
 httpsServer.listen(SERVER_PORT, SERVER_HOST, () => console.log(`Running on: ${SERVER_HOST}:${SERVER_PORT}`));
 
 //app.listen(SERVER_PORT, SERVER_HOST, () => console.log(`Running on: ${SERVER_HOST}:${SERVER_PORT}`));
